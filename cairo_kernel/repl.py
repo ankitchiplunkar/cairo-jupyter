@@ -1,18 +1,5 @@
 #!/usr/bin/env python3
-
-import os
-import sys
-import traceback
 from typing import List, Union
-
-from prompt_toolkit import PromptSession
-from prompt_toolkit.enums import DEFAULT_BUFFER
-from prompt_toolkit.filters import has_focus, has_selection
-from prompt_toolkit.history import FileHistory
-from prompt_toolkit.key_binding import KeyBindings
-from prompt_toolkit.lexers import PygmentsLexer
-from prompt_toolkit.styles import Style, merge_styles, style_from_pygments_cls
-from pygments.styles.fruity import FruityStyle
 
 from starkware.cairo.lang.compiler.assembler import assemble
 from starkware.cairo.lang.compiler.ast.cairo_types import TypePointer, TypeStruct
@@ -46,7 +33,7 @@ from starkware.cairo.lang.compiler.preprocessor.struct_collector import StructCo
 from starkware.cairo.lang.compiler.preprocessor.unique_labels import UniqueLabelCreator
 from starkware.cairo.lang.compiler.program import StrippedProgram
 from starkware.cairo.lang.compiler.scoped_name import ScopedName
-from syntax_highlighting import CairoLexer
+from .syntax_highlighting import CairoLexer
 from starkware.cairo.lang.vm.cairo_runner import CairoRunner
 
 PRIME = 2 ** 251 + 17 * 2 ** 192 + 1

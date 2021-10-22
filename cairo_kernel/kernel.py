@@ -1,10 +1,8 @@
 from ipykernel.kernelbase import Kernel
 from prompt_toolkit.lexers import PygmentsLexer
-from syntax_highlighting import CairoLexer
+from .syntax_highlighting import CairoLexer
 from starkware.cairo.lang.compiler.error_handling import LocationError
-from repl import Repl
-import traceback
-import sys
+from .repl import Repl
 
 
 class CairoKernel(Kernel):
