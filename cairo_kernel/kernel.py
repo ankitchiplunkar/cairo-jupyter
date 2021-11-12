@@ -1,3 +1,6 @@
+import sys
+import traceback
+
 from ipykernel.kernelbase import Kernel
 from prompt_toolkit.lexers import PygmentsLexer
 from .syntax_highlighting import CairoLexer
@@ -24,30 +27,33 @@ class CairoKernel(Kernel):
         self, code, silent, store_history=True, user_expressions=None, allow_stdin=False
     ):
         if not silent:
-            value = self.repl.run(code)
-            if value is not None:
-                stream_content = {"name": "stdout", "text": str(value)}
-            else:
-                stream_content = {"name": "stdout", "text": value}
-            
+            try:
+                value = self.repl.run(code)
+                stream_content = {"name": "stdout", "text": str(value) if value else value}
+                self.send_response(self.iopub_socket, "stream", stream_content)
+                return {
+                    "status": "ok",
+                    # The base class increments the execution count
+                    "execution_count": self.execution_count,
+                    "payload": [],
+                    "user_expressions": {},
+                }
+
+            except LocationError as exc:
+                error_msg = str(exc)
+            except Exception:
+                error_msg = str(traceback.print_exc())
+
+            stream_content = {"name": "stdout", "text": error_msg}
             self.send_response(self.iopub_socket, "stream", stream_content)
-            
-        # TODO(exception handling)"
-        """
-        try:
-            self.run(code)
-        except LocationError as exc:
-            print(exc, file=sys.stderr)
-        except Exception:
-            traceback.print_exc()
-        """
-        return {
-                "status": "ok",
-                # The base class increments the execution count
-                "execution_count": self.execution_count,
-                "payload": [],
-                "user_expressions": {},
-            }     
+            return {
+                "status": "error",
+                #TODO(arie): set right parameteres for status = error
+                # "ename": "my_ename",
+                # "evalue": "my_evalue",
+                # "traceback": error_msg
+            }
+
 
 
 if __name__ == "__main__":
