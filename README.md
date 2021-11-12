@@ -3,6 +3,8 @@ cairo_kernel
 
 ``cairo_kernel`` is a simple Jupyter kernel for Cairo a smart contract programing language for STARKs. 
 
+[Kanban](https://ankitchiplunkar.notion.site/Cairo-kernel-starkware-py-5f64ee70cfde4578969c430bf1a14531)
+
 Installation
 ------------
 1. Install virtualenv
