@@ -97,17 +97,20 @@ class Repl:
                 code_type="code_element",
                 expected_type=CodeElement,
             )
+        
 
     def run(self, code: str):
-        obj = self.parse(code)
-
-        if isinstance(obj, CodeElement):
-            self.exec(obj)
-        elif isinstance(obj, Expression):
-            value = self.eval(obj)
-            return value
+        if code.startswith("#"):
+            return code
         else:
-            raise NotImplementedError(f"Unsupported type: {type(obj).__name__}")
+            obj = self.parse(code)
+            if isinstance(obj, CodeElement):
+                self.exec(obj)
+            elif isinstance(obj, Expression):
+                value = self.eval(obj)
+                return value
+            else:
+                raise NotImplementedError(f"Unsupported type: {type(obj).__name__}")
 
     def exec(self, code_element: CodeElement):
         # If the code element is an import statement or a function, we don't need to run
