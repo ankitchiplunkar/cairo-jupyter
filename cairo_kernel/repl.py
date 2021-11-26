@@ -98,7 +98,13 @@ class Repl:
                 expected_type=CodeElement,
             )
 
+    def filter_comments(self, code: str):
+        code = code.split('\n')
+        code = [line for line in code if not line.startswith("#")]
+        return '\n'.join(code)
+
     def run(self, code: str):
+        code = self.filter_comments(code)
         obj = self.parse(code)
 
         if isinstance(obj, CodeElement):
