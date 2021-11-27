@@ -98,7 +98,17 @@ class Repl:
                 expected_type=CodeElement,
             )
 
+    def filter_comments(self, code: str):
+        code = code.split('\n')
+        # Comments will be ignored
+        code = [line.split('#')[0] for line in code]
+
+        # Supports extra new lines
+        code = [line for line in code if line != '']
+        return '\n'.join(code)
+
     def run(self, code: str):
+        code = self.filter_comments(code)
         obj = self.parse(code)
 
         if isinstance(obj, CodeElement):
