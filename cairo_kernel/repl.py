@@ -100,7 +100,11 @@ class Repl:
 
     def filter_comments(self, code: str):
         code = code.split('\n')
-        code = [line for line in code if not line.startswith("#")]
+        # Comments will be ignored
+        code = [line.split('#')[0] for line in code]
+
+        # Supports extra new lines
+        code = [line for line in code if line != '']
         return '\n'.join(code)
 
     def run(self, code: str):
