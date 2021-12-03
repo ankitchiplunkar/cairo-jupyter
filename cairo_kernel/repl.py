@@ -9,7 +9,9 @@ from starkware.cairo.lang.compiler.ast.code_elements import (
     CodeElementImport,
     CodeElementScoped,
 )
+
 from starkware.cairo.lang.compiler.ast.expr import Expression
+from starkware.cairo.lang.compiler.ast.expr_func_call import ExprFuncCall
 from starkware.cairo.lang.compiler.ast.module import CairoModule
 from starkware.cairo.lang.compiler.ast.node import AstNode
 from starkware.cairo.lang.compiler.cairo_compile import get_module_reader
@@ -84,12 +86,21 @@ class Repl:
 
     def parse(self, code: str) -> Union[CodeElement, Expression]:
         try:
-            return parse(
+            first_parse = parse(
                 filename=INPUT_FILENAME,
                 code=code,
                 code_type="expr",
                 expected_type=Expression,
             )
+            if isinstance(first_parse, ExprFuncCall):
+                return parse(
+                    filename=INPUT_FILENAME,
+                    code=code,
+                    code_type="code_element",
+                    expected_type=CodeElement,
+                )
+            else:
+                return first_parse
         except ParserError:
             return parse(
                 filename=INPUT_FILENAME,
