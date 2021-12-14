@@ -56,7 +56,7 @@ class Repl:
         path = ["src"]
         self.module_reader = get_module_reader(path)
 
-        builtins = ["pedersen", "range_check", "ecdsa"]
+        builtins = ["output", "pedersen", "range_check", "ecdsa"]
         layout = "small"
         program = StrippedProgram(prime=PRIME, data=[], builtins=builtins, main=0)
         self.runner = CairoRunner(program=program, layout=layout, proof_mode=False)
