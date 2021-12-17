@@ -37,3 +37,19 @@ Using the Kernel
 
 **Console frontends**: To use it with the console frontends, add ``--kernel cairo`` to
 their command line arguments.
+
+Running the kernel on notebook
+--------------------------------
+
+1. Start the notebook
+
+    ```
+    jupyter notebook
+    ```
+
+2. Start cairo kernel via UI
+
+![cairo_jupyter_gif](https://user-images.githubusercontent.com/5904910/146619802-6ee1bb5d-243a-4e0d-9ab2-064e101f5bcd.gif)
+
+
+
