@@ -2,7 +2,7 @@
 from typing import List, Union
 
 from starkware.cairo.lang.compiler.assembler import assemble
-from starkware.cairo.lang.compiler.ast.cairo_types import TypePointer, TypeStruct
+from starkware.cairo.lang.compiler.ast.cairo_types import TypePointer, TypeStruct, TypeFelt
 from starkware.cairo.lang.compiler.ast.code_elements import (
     CodeElement,
     CodeElementFunction,
@@ -63,25 +63,36 @@ class Repl:
         self.runner.initialize_segments()
         self.runner.initialize_main_entrypoint()
         self.runner.initialize_vm(hint_locals={})
-
+        
         for offset, builtin in enumerate(builtins, -2 - len(builtins)):
             builtin_name = MAIN_SCOPE + f"{builtin}_ptr"
             self.preprocessor.add_future_definition(
                 name=builtin_name,
                 future_definition=FutureIdentifierDefinition(identifier_type=ReferenceDefinition),
             )
-            self.preprocessor.add_simple_reference(
-                name=builtin_name,
-                reg=Register.FP,
-                cairo_type=TypePointer(
-                    pointee=TypeStruct(
-                        scope=CAIRO_BUILTIN_SCOPE + "HashBuiltin",
-                        is_fully_resolved=True,
+            if builtin == "output":
+                self.preprocessor.add_simple_reference(
+                    name=builtin_name,
+                    reg=Register.FP,
+                    cairo_type=TypePointer(
+                        pointee=TypeFelt(),
                     ),
-                ),
-                offset=offset,
-                location=None,
+                    offset=offset,
+                    location=None,
             )
+            else:
+                self.preprocessor.add_simple_reference(
+                    name=builtin_name,
+                    reg=Register.FP,
+                    cairo_type=TypePointer(
+                        pointee=TypeStruct(
+                            scope=CAIRO_BUILTIN_SCOPE + "HashBuiltin",
+                            is_fully_resolved=True,
+                        ),
+                    ),
+                    offset=offset,
+                    location=None,
+                )
             self.preprocessor.reference_states[builtin_name] = ReferenceState.ALLOW_IMPLICIT
 
     def parse(self, code: str) -> Union[CodeElement, Expression]:
