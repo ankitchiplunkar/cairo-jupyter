@@ -120,7 +120,8 @@ class Repl:
                 expected_type=CodeElement,
             )
 
-    def filter_comments(self, code: str):
+    def preprocess_parser(self, code: str):
+
         code = code.split('\n')
         # Comments will be ignored
         code = [line.split('#')[0] for line in code]
@@ -129,17 +130,54 @@ class Repl:
         code = [line for line in code if line != '']
         return '\n'.join(code)
 
-    def run(self, code: str):
-        code = self.filter_comments(code)
-        obj = self.parse(code)
+    def is_func_def(self, code:str):
+        return code.strip().startswith('func ')
 
-        if isinstance(obj, CodeElement):
-            self.exec(obj)
-        elif isinstance(obj, Expression):
-            value = self.eval(obj)
-            return value
-        else:
-            raise NotImplementedError(f"Unsupported type: {type(obj).__name__}")
+    # List of instructions that generate and end statement
+    triggers_end = ['if']
+
+    def func_def_ends_index(self, list_instructions):
+        count = 0
+        i = 0
+        while i <= len(list_instructions):
+            if list_instructions[i].strip().startswith('end'):
+                if count == 0:
+                    return i
+                else:
+                    count -= 1
+            if list_instructions[i].strip().startswith(tuple(self.triggers_end)):
+                count += 1
+            i += 1
+
+    def get_instructions(self, code:str):
+        list_instructions = code.split('\n')
+        output_instructions = []
+        i = 0
+        while i < len(list_instructions):
+            current = list_instructions[i]
+
+            if not self.is_func_def(current):
+                output_instructions.append(current)
+                i += 1
+            else:
+                end_index = self.func_def_ends_index(list_instructions[i:])
+                output_instructions.append('\n'.join(list_instructions[i: i + end_index + 1]))
+                i += end_index + 1
+        return output_instructions
+
+    def run(self, code: str):
+        code = self.preprocess_parser(code)
+        list_instructions = self.get_instructions(code)
+        for instruction in list_instructions:
+            obj = self.parse(instruction)
+
+            if isinstance(obj, CodeElement):
+                self.exec(obj)
+            elif isinstance(obj, Expression):
+                value = self.eval(obj)
+                return value
+            else:
+                raise NotImplementedError(f"Unsupported type: {type(obj).__name__}")
 
     def exec(self, code_element: CodeElement):
         # If the code element is an import statement or a function, we don't need to run
