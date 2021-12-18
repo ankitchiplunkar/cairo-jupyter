@@ -120,26 +120,33 @@ class Repl:
                 expected_type=CodeElement,
             )
 
-    def filter_comments(self, code: str):
+    def preprocess_parser(self, code: str):
+
         code = code.split('\n')
         # Comments will be ignored
         code = [line.split('#')[0] for line in code]
 
         # Supports extra new lines
         code = [line for line in code if line != '']
-        return '\n'.join(code)
+        return code
 
     def run(self, code: str):
-        code = self.filter_comments(code)
-        obj = self.parse(code)
+        # If cell contains a function definition, run the whole cell at once
+        # Else, run line by line
+        # TODO(arie): enable having both func def and instructions in the same cell
+        list_instructions = self.preprocess_parser(code)
+        if list_instructions[0].startswith('func '):
+            list_instructions = ['\n'.join(list_instructions)]
+        for instruction in list_instructions:
+            obj = self.parse(instruction)
 
-        if isinstance(obj, CodeElement):
-            self.exec(obj)
-        elif isinstance(obj, Expression):
-            value = self.eval(obj)
-            return value
-        else:
-            raise NotImplementedError(f"Unsupported type: {type(obj).__name__}")
+            if isinstance(obj, CodeElement):
+                self.exec(obj)
+            elif isinstance(obj, Expression):
+                value = self.eval(obj)
+                return value
+            else:
+                raise NotImplementedError(f"Unsupported type: {type(obj).__name__}")
 
     def exec(self, code_element: CodeElement):
         # If the code element is an import statement or a function, we don't need to run
