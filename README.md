@@ -30,7 +30,7 @@ Installation
 Using the Kernel
 ---------------------
 
-[Cairo example](https://github.com/ankitchiplunkar/cairo-jupyter/blob/master/Cairo%20example.ipynb) is a working example of the notebook.
+[Cairo example](https://github.com/ankitchiplunkar/cairo-jupyter/blob/master/notebooks/Cairo%20example.ipynb) is a working example of the notebook.
 
 
 **Notebook**: The *New* menu in the notebook should show an option for an Cairo notebook.
