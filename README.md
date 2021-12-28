@@ -14,17 +14,10 @@ Installation
     source venv/bin/activate
     ```
 
-2. Clone the repo:
+2. To install ``cairo_kernel``:
 
     ```
-    git clone https://github.com/ankitchiplunkar/cairo-jupyter.git
-    ```
-
-3. To install ``cairo_kernel`` from local:
-
-    ```
-    pip install -e .
-    python -m cairo_kernel.install
+    pip install cairo-kernel
     ```
 
 Using the Kernel
@@ -52,4 +45,25 @@ Running the kernel on notebook
 ![cairo_jupyter_gif](https://user-images.githubusercontent.com/5904910/146619802-6ee1bb5d-243a-4e0d-9ab2-064e101f5bcd.gif)
 
 
+
+Development
+-------------------------------
+
+1. Clone & enter the repo. 
+
+```
+    git clone https://github.com/ankitchiplunkar/cairo-jupyter.git
+```
+
+2. Install required libraries. 
+
+```
+    pip install -r requirements.txt
+```
+
+3. Install the cairo-jupyter library locally:
+```
+    pip install -e .
+    python -m cairo_kernel.install
+```
 
