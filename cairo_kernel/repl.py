@@ -63,7 +63,7 @@ class Repl:
         self.runner.initialize_segments()
         self.runner.initialize_main_entrypoint()
         self.runner.initialize_vm(hint_locals={})
-        
+
         for offset, builtin in enumerate(builtins, -2 - len(builtins)):
             builtin_name = MAIN_SCOPE + f"{builtin}_ptr"
             self.preprocessor.add_future_definition(
@@ -149,6 +149,17 @@ class Repl:
                 count += 1
             i += 1
 
+    def is_multiple_imports(self, code:str):
+        return code.strip().endswith('import (')
+
+    def multiple_imports_end_index(self, list_instructions):
+        i = 0
+        while i <= len(list_instructions):
+            if ')' in list_instructions[i]:
+                return i
+            else:
+                i += 1
+
     def get_instructions(self, code:str):
         list_instructions = code.split('\n')
         output_instructions = []
@@ -156,13 +167,18 @@ class Repl:
         while i < len(list_instructions):
             current = list_instructions[i]
 
-            if not self.is_func_def(current):
+            if not self.is_func_def(current) and not self.is_multiple_imports(current):
                 output_instructions.append(current)
                 i += 1
             else:
-                end_index = self.func_def_ends_index(list_instructions[i:])
+                if self.is_func_def(current):
+                    end_index = self.func_def_ends_index(list_instructions[i:])
+                else:
+                    end_index = self.multiple_imports_end_index(list_instructions[i:])
+                list_instructions = [instruction.strip() for instruction in list_instructions]
                 output_instructions.append('\n'.join(list_instructions[i: i + end_index + 1]))
                 i += end_index + 1
+
         return output_instructions
 
     def run(self, code: str):
@@ -256,7 +272,7 @@ class Repl:
                 memory=self.runner.vm.run_context.memory,
                 identifiers=self.identifiers,
             ).eval(expr)
-        
+
     def is_repl_line_complete(self, code: str) -> bool:
         """
         Returns True if the given code is complete and does not require additional code lines.
