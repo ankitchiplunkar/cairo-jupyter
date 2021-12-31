@@ -149,6 +149,16 @@ class Repl:
                 count += 1
             i += 1
 
+    def is_struct_def(self, code:str):
+        return code.strip().startswith('struct ')
+
+    def struct_def_ends_index(self, list_instructions):
+        i = 0
+        while i <= len(list_instructions):
+            if list_instructions[i].strip().startswith('end'):
+                return i
+            i += 1
+
     def is_multiple_imports(self, code:str):
         return code.strip().endswith('import (')
 
@@ -167,12 +177,16 @@ class Repl:
         while i < len(list_instructions):
             current = list_instructions[i]
 
-            if not self.is_func_def(current) and not self.is_multiple_imports(current):
+            if not self.is_func_def(current) \
+                    and not self.is_multiple_imports(current)\
+                    and not self.is_struct_def(current):
                 output_instructions.append(current)
                 i += 1
             else:
                 if self.is_func_def(current):
                     end_index = self.func_def_ends_index(list_instructions[i:])
+                elif self.is_struct_def(current):
+                    end_index = self.struct_def_ends_index(list_instructions[i:])
                 else:
                     end_index = self.multiple_imports_end_index(list_instructions[i:])
                 list_instructions = [instruction.strip() for instruction in list_instructions]
