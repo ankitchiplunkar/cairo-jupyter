@@ -36,8 +36,8 @@ setup(
     description='Jupyter kernel for Cairo language',
     long_description=readme,
     long_description_content_type='text/markdown',
-    author='Ankit Chiplunkar',
-    author_email='ankitchiplunkar@gmail.com',
+    author='Ankit Chiplunkar, Arie Benhamou',
+    author_email='ankitchiplunkar@gmail.com, benhamou.arie@gmail.com',
     python_requires='>=3.6, <4',
     keywords=['ethereum', 'starkware'],
     install_requires=[
