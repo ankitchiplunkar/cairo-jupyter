@@ -12,7 +12,7 @@ def try_and_except(func):
 
 func = """
 func add2(x : felt) -> (x : felt): 
-    return (x=x+2)
+    return (x=x+2) 
     end
 """
 try_and_except(func)
