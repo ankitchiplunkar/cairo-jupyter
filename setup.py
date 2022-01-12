@@ -38,7 +38,7 @@ setup(
     long_description_content_type='text/markdown',
     author='Ankit Chiplunkar, Arie Benhamou',
     author_email='ankitchiplunkar@gmail.com, benhamou.arie@gmail.com',
-    python_requires='>=3.6, <4',
+    python_requires='>=3.6, <3.10',
     keywords=['ethereum', 'starkware'],
     install_requires=[
         "pygments",
