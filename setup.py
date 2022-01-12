@@ -5,7 +5,6 @@ from setuptools import (
     setup,
 )
 from distutils.command.install import install
-from cairo_kernel import install as kernel_install
 from os import path
 
 # managing version
@@ -27,6 +26,7 @@ class InstallWithKernelspec(install):
             # If the NO_KERNEL_INSTALL env variable is set then skip the kernel installation.
             return
         else:
+            from cairo_kernel import install as kernel_install
             kernel_install.main(argv=sys.argv)
 
 setup(
@@ -47,6 +47,7 @@ setup(
         "jupyter==1.0.0",
         "jupyter_client==6.1.12",
         "ipykernel==6.4.2",
+        "pytest==6.2.5",
     ],
     classifiers=[
         'Development Status :: 3 - Alpha',
