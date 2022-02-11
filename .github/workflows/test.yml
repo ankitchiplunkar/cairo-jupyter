@@ -12,6 +12,7 @@ jobs:
           python-version: 3.8.10
       - name: Run pytest
         run: |
-          pip install -r requirements.txt 
+          pip install -U setuptools
+          pip install -U wheel
           pip install -e .
           pytest

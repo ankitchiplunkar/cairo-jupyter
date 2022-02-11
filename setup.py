@@ -1,9 +1,6 @@
 import os
 import sys
-from setuptools import (
-    find_packages,
-    setup,
-)
+import setuptools
 from distutils.command.install import install
 from os import path
 
@@ -26,13 +23,15 @@ class InstallWithKernelspec(install):
             # If the NO_KERNEL_INSTALL env variable is set then skip the kernel installation.
             return
         else:
+            print("Reached kernel install")
             from cairo_kernel import install as kernel_install
             kernel_install.main(argv=sys.argv)
 
-setup(
+setuptools.setup(
     name='cairo_kernel',
     version=VERSION,
     packages=['cairo_kernel'],
+    cmdclass={'install': InstallWithKernelspec},
     description='Jupyter kernel for Cairo language',
     long_description=readme,
     long_description_content_type='text/markdown',
@@ -41,8 +40,8 @@ setup(
     python_requires='>=3.6, <3.10',
     keywords=['ethereum', 'starkware'],
     install_requires=[
-        "pygments",
-        "contextvars",
+        "pygments==2.11.2",
+        "contextvars==2.4",
         "cairo-lang==0.4.2",
         "jupyter==1.0.0",
         "jupyter_client==6.1.12",
