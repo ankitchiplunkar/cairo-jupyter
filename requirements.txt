@@ -1,8 +1,0 @@
-pygments
-prompt_toolkit
-contextvars
-cairo-lang==0.4.2
-jupyter==1.0.0
-jupyter_client==6.1.12
-ipykernel==6.4.2
-pytest==6.2.5
