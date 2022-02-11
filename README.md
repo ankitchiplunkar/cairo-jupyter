@@ -17,6 +17,9 @@ Installation
 2. To install ``cairo_kernel``:
 
     ```
+    # Upgrade to latest version of setuptools and wheel
+    pip install -U setuptools
+    pip install -U wheel
     pip install cairo-kernel
     ```
 
