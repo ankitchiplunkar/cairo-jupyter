@@ -39,7 +39,7 @@ setuptools.setup(
     author_email='ankitchiplunkar@gmail.com, benhamou.arie@gmail.com',
     python_requires='>=3.6, <3.10',
     keywords=['ethereum', 'starkware'],
-    install_requires=[
+    setup_requires=[
         "pygments==2.11.2",
         "contextvars==2.4",
         "cairo-lang==0.4.2",
