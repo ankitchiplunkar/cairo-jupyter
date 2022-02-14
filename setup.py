@@ -40,6 +40,10 @@ setuptools.setup(
     python_requires='>=3.6, <3.10',
     keywords=['ethereum', 'starkware'],
     setup_requires=[
+        "jupyter_client==6.1.12",
+        "ipykernel==6.4.2",
+    ],
+    install_requires=[
         "pygments==2.11.2",
         "contextvars==2.4",
         "cairo-lang==0.4.2",

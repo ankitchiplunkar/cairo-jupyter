@@ -1,4 +1,4 @@
 from ipykernel.kernelapp import IPKernelApp
-from . import CairoKernel
+from .kernel import CairoKernel
 
 IPKernelApp.launch_instance(kernel_class=CairoKernel)
