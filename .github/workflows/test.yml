@@ -14,5 +14,5 @@ jobs:
         run: |
           pip install -U setuptools
           pip install -U wheel
-          pip install -e .
+          pip install .
           pytest
