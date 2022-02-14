@@ -1,7 +1,7 @@
-cairo_kernel
+cairo_jupyter
 ===========
 
-``cairo_kernel`` is a simple Jupyter kernel for Cairo a smart contract programing language for STARKs. 
+``cairo_jupyter`` hosts notebooks and code for cairo-kernel its a simple Jupyter kernel for Cairo a smart contract programing language for STARKs. 
 
 Hosted on binder: [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/ankitchiplunkar/cairo-jupyter/HEAD)
 
