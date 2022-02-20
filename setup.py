@@ -46,7 +46,7 @@ setuptools.setup(
     install_requires=[
         "pygments==2.11.2",
         "contextvars==2.4",
-        "cairo-lang==0.4.2",
+        "cairo-lang==0.7.1",
         "jupyter==1.0.0",
         "jupyter_client==6.1.12",
         "ipykernel==6.4.2",
