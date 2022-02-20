@@ -48,15 +48,15 @@ class Repl:
     def __init__(self):
         self.identifiers = IdentifierManager()
         self.struct_collector = StructCollector(identifiers=self.identifiers)
+        builtins = ["output", "pedersen", "range_check", "ecdsa"]
         # TODO(lior, 01/10/2021): Get prime as an argument.
-        self.preprocessor = Preprocessor(prime=PRIME, identifiers=self.identifiers)
+        self.preprocessor = Preprocessor(prime=PRIME, builtins=builtins, identifiers=self.identifiers)
         self.identifier_collector = IdentifierCollector()
         self.unique_label_creator = UniqueLabelCreator()
         # TODO(lior, 01/10/2021): Get path as an argument.
         path = ["src"]
         self.module_reader = get_module_reader(path)
 
-        builtins = ["output", "pedersen", "range_check", "ecdsa"]
         layout = "small"
         program = StrippedProgram(prime=PRIME, data=[], builtins=builtins, main=0)
         self.runner = CairoRunner(program=program, layout=layout, proof_mode=False)
@@ -113,12 +113,15 @@ class Repl:
             else:
                 return first_parse
         except ParserError:
+            print("reached parse error")
             return parse(
                 filename=INPUT_FILENAME,
                 code=code,
                 code_type="code_element",
                 expected_type=CodeElement,
             )
+        finally:
+            print("reached here")
 
     def preprocess_parser(self, code: str):
 
